@@ -13,24 +13,37 @@ const routes = [
         component: Login,
     },
     {
-        path: '/t',
+        path: '/',
         component: Main,
         redirect: '/t/aum/au/01',
         meta: {requiresAuth: true},
         children: [
             {
-                path: '/aum', name: 'audience_manager', children: [
+                path: '/t',
+                name: 'template',
+                children: [
                     {
-                        path: '/au', name: 'audience', children: [
+                        path: 'aum',
+                        name: 'audience_manager',
+                        children: [
                             {
-                                path: '/01', name: 'list', component: () => import('@/components/Foo'),
+                                path: 'au',
+                                name: 'audience',
+                                children: [
+                                    {
+                                        path: '01',
+                                        name: 'list',
+                                        components: () => import('@/components/Foo')
+                                    }
+                                ]
                             }
                         ],
                     }
-                ],
+                ]
             }
         ]
     },
+    // { path: '*', redirect: '/' },
 ];
 
 const router = new VueRouter({
@@ -40,16 +53,16 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     // if (to.matched.some(record => record.meta.requiresAuth)) {
-    //     if (store.getters['auth/authMenu'].indexOf(to.name) === -1) {
-    //         alert('메뉴 권한이 없습니다. 관리자에게 문의하세요.');
-    //         const fullPath = router.currentRoute.fullPath;
-    //         router.push({
-    //             path: '/login',
-    //             query: {redirect: fullPath},
-    //         });
-    //     } else {
-    //         next();
-    //     }
+    // if (store.getters['auth/authMenu'].indexOf(to.name) === -1) {
+    //     alert('메뉴 권한이 없습니다. 관리자에게 문의하세요.');
+    //     const fullPath = router.currentRoute.fullPath;
+    //     router.push({
+    //         path: '/login',
+    //         query: {redirect: fullPath},
+    //     });
+    // } else {
+    //     next();
+    // }
     // } else {
     //     next();
     // }

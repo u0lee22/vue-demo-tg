@@ -12,8 +12,8 @@ export default {
   methods: {
     login: function () {
       this.$store.dispatch('auth/login').then(res => {
-        console.log(res);
-        this.$router.push(res.data);
+        console.log('login :: ',res);
+        this.$router.push(res.message);
       });
     },
     logout: function () {

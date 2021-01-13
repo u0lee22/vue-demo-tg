@@ -1,26 +1,31 @@
 import axios from 'axios';
+import {store} from '@/store';
 
 const getters = {
     authMenu: state => {
         return state.user.menus
             .filter(menu => menu.status)
-            .map(menu => menu.name);
+            .reduce((menuList, menu) => {
+                menuList.push(...menu.templates);
+                return menuList;
+            }, []);
     }
 };
 
 const actions = {
     login() {
-        const url = '/api/loginProcessing';
+        const url = '/api/login';
         let params = new URLSearchParams();
-        params.append('id','wy.lee@tg360tech.com');
-        params.append('pw','1');
+        params.append('id', 'wy.lee@tg360tech.com');
+        params.append('pw', '1');
         return axios.post(url, params)
             .then(function (response) {
-                console.log('response :: ',response);
-                return response.data.result;
+                console.log('response :: ', response);
+                store.commit('auth/setCurrentUser', response.data.result);
+                return response.data;
             })
             .catch(function (error) {
-                console.log('error :: ',error);
+                console.log('error :: ', error);
                 return error;
             });
     },
@@ -38,8 +43,8 @@ const actions = {
 
 const mutations = {
     setCurrentUser(state, item) {
-        state.user = item;
-        state.user.loaded = true;
+        state.user = {...item, loaded: true};
+        console.log(state.user);
         state.isAuthenticated = true;
     }
 };
@@ -50,6 +55,7 @@ export default {
         isAuthenticated: false,
         user: {
             menus: [],
+            loaded: false,
         },
     }),
     getters,
