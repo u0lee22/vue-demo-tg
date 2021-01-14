@@ -14,8 +14,8 @@ export default {
 
 <style type="text/css">
 .content {
-  margin: 10px;
   height: 550px;
   border: solid 1px;
+  padding: 10px;
 }
 </style>

@@ -1,15 +1,21 @@
 <template>
-  <div>
-    <button @click="logout">logout</button>
-    <div>
-      <nav class="menuList">
-        <li v-for="(menu, index) in menus" :key="index" v-show="menu.status">
-          <div>{{menu.apiUrl}}</div>
-          <router-link v-bind:to="menu.apiUrl">{{ menu.apiName }}</router-link>
-        </li>
-      </nav>
+  <div class="main">
+    <div class="top">
+      <div>Menu Test</div>
+      <div>
+        <button @click="logout">logout</button>
+      </div>
     </div>
-    <default-layout></default-layout>
+    <div class="menu-container">
+      <div>
+        <nav class="menuList">
+          <li v-for="(menu, index) in menus" :key="index" v-show="menu.status">
+            <router-link v-bind:to="menu.apiUrl">{{ menu.apiName }}</router-link>
+          </li>
+        </nav>
+      </div>
+      <default-layout></default-layout>
+    </div>
   </div>
 </template>
 
@@ -19,12 +25,9 @@ import DefaultLayout from "@/components/DefaultLayout";
 export default {
   name: "Main",
   created() {
-    // const homeRoute = {path: '/home', name: 'home', component: () => import('@/components/Home')};
-    // this.$router.options.routes[1].children.push(homeRoute);
-    // this.$router.addRoutes(this.$router.options.routes);
   },
   computed: {
-    menus : function (){
+    menus: function () {
       return this.$store.getters["auth/authMenu"];
     }
 
@@ -43,8 +46,25 @@ export default {
 </script>
 
 <style>
-.menuList {
-  display: flex;
-  flex-direction: column;
+
+.main {
+  margin: 20px;
 }
+
+.top {
+  margin: 20px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.menu-container {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+}
+
+.menuList {
+  text-align: start;
+}
+
+
 </style>
