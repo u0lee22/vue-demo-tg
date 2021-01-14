@@ -52,21 +52,14 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    // if (to.matched.some(record => record.meta.requiresAuth)) {
-    // if (store.getters['auth/authMenu'].indexOf(to.name) === -1) {
-    //     alert('메뉴 권한이 없습니다. 관리자에게 문의하세요.');
-    //     const fullPath = router.currentRoute.fullPath;
-    //     router.push({
-    //         path: '/login',
-    //         query: {redirect: fullPath},
-    //     });
-    // } else {
-    //     next();
-    // }
-    // } else {
-    //     next();
-    // }
-    next();
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        // TODO
+        //cookie 체크해서 auth에서 데이터 가져오는 로직 추가
+        next();
+
+    } else {
+        next();
+    }
 });
 
 export default router;
