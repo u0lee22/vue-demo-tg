@@ -14,6 +14,43 @@ const STATUS = {
     SC_CONFLICT: 409
 }
 
+const router = new VueRouter({
+    mode: 'history',
+    routes
+});
+
+const originalPush = VueRouter.prototype.push
+
+VueRouter.prototype.push = function push(location) {
+    return originalPush.call(this, location).catch(err => err)
+}
+
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        const auth = cookie.get(AUTHENTICATE_KEY);
+        if (auth === 'true') {
+            if (!store.state.auth.isAuthenticated) {
+                store.dispatch('auth/authenticate');
+            }
+
+            if (store.getters['auth/authTemplate'].indexOf(to.path) > -1) {
+                next();
+            } else {
+                alert('권한 없음');
+            }
+        } else {
+            const fullPath = router.currentRoute.fullPath;
+            router.push({
+                path: '/login',
+                query: {redirect: fullPath},
+            });
+
+        }
+    } else {
+        next();
+    }
+});
+
 axios.interceptors.response.use(
     (response) => {
         return response;
@@ -37,34 +74,5 @@ axios.interceptors.response.use(
         }
     }
 );
-
-const router = new VueRouter({
-    mode: 'history',
-    routes
-});
-
-
-router.beforeEach((to, from, next) => {
-    console.log(to, from);
-    if (to.matched.some(record => record.meta.requiresAuth)) {
-        const auth = cookie.get(AUTHENTICATE_KEY);
-
-        if (auth === 'true') {
-            if (!store.state.auth.isAuthenticated) {
-                store.dispatch('auth/authenticate');
-            }
-            next();
-        } else {
-            const fullPath = router.currentRoute.fullPath;
-            router.push({
-                path: '/login',
-                query: {redirect: fullPath},
-            });
-
-        }
-    } else {
-        next();
-    }
-});
 
 export default router;

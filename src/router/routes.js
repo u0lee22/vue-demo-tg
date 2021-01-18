@@ -75,6 +75,11 @@ const ROUTES = [
                 path: 'template',
                 name: 'comm_template',
                 component: () => import('@/page/comm/template')
+            },
+            {
+                path: 'aaa',
+                name: 'comm_aaa',
+                component: () => import('@/page/comm/template')
             }
         ]
     },

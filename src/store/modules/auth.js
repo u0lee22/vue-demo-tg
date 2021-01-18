@@ -14,6 +14,11 @@ const getters = {
                 menuList.push(...menu.templates);
                 return menuList;
             }, []);
+    },
+    authTemplate: (state, getters) => {
+        const templates = getters.authMenu ? getters.authMenu.map(menu => menu.apiUrl) : [];
+        templates.push('/t/aum/au/01');
+        return templates;
     }
 };
 
@@ -63,7 +68,7 @@ const mutations = {
         } else {
             state.user = {menus: []}
             state.isAuthenticated = false;
-            cookie.set(AUTHENTICATE_KEY, false);
+            cookie.remove(AUTHENTICATE_KEY);
         }
     }
 };
