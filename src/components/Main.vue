@@ -24,7 +24,9 @@ import DefaultLayout from "@/components/DefaultLayout";
 
 export default {
   name: "Main",
-  created() {
+  mounted() {
+    // console.log('test', this.$store.getters["auth/authMenu"]);
+    // console.log('test', this.$store.state.auth.user);
   },
   computed: {
     menus: function () {

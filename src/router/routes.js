@@ -1,19 +1,13 @@
-import Login from "@/page/Login";
-import Main from "@/components/Main";
-import Vue from "vue";
-import VueRouter from "vue-router";
+import Login from '@/page/Login';
+import Main from '@/components/Main';
 
-Vue.use(VueRouter);
-
-
-const routes = [
+const ROUTES = [
     {
-        path: "/login",
-        name: "Login",
-        component: Login,
+        path: '/login', name: "Login", component: Login,
     },
     {
         path: '/',
+        redirect: '/t/aum/au/01',
         component: Main,
         meta: {requiresAuth: true},
     },
@@ -79,29 +73,12 @@ const routes = [
         children: [
             {
                 path: 'template',
-                name: 'template',
+                name: 'comm_template',
                 component: () => import('@/page/comm/template')
             }
         ]
-    }
-    // { path: '*', redirect: '/' },
+    },
+    {path: '*', redirect: '/'},
 ];
 
-const router = new VueRouter({
-    mode: 'history',
-    routes
-});
-
-router.beforeEach((to, from, next) => {
-    console.log(to);
-    if (to.matched.some(record => record.meta.requiresAuth)) {
-        // TODO
-        //cookie 체크해서 auth에서 데이터 가져오는 로직 추가
-        next();
-
-    } else {
-        next();
-    }
-});
-
-export default router;
+export {ROUTES};

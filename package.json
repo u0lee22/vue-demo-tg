@@ -13,6 +13,7 @@
     "es6-promise": "^4.2.8",
     "url-search-params-polyfill": "^8.1.0",
     "vue": "^2.6.11",
+    "vue-cookies": "^1.7.4",
     "vue-router": "^3.4.9",
     "vuex": "^3.6.0"
   },
